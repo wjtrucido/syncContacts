@@ -14,7 +14,7 @@ const LIMIT = 10;
 router.post('/new-contacts-notification', (req: Request, res: Response) => {
     const contacts = req.body
     console.log(contacts)
-    res.status(200).json({
+    res.status(200).send({
         ok: 'Contact added'
     })
 })
