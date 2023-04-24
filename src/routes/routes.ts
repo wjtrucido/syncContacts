@@ -11,9 +11,11 @@ const router = express.Router()
 const upload = multer({ dest: 'uploads/' });
 const LIMIT = 10;
 
-router.get('/home', (req: Request, res: Response) => {
+router.post('/new-contacts-notification', (req: Request, res: Response) => {
+    const contacts = req.body
+    console.log(contacts)
     res.status(200).json({
-        ok: 'Server running'
+        ok: 'Contact added'
     })
 })
 
