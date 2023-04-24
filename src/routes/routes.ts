@@ -11,7 +11,7 @@ const router = express.Router()
 const upload = multer({ dest: 'uploads/' });
 const LIMIT = 10;
 
-router.get('/', (req: Request, res: Response) => {
+router.get('/home', (req: Request, res: Response) => {
     res.status(200).json({
         ok: 'Server running'
     })
