@@ -14,18 +14,10 @@ const MONGODB_URI = process.env.MONGODB_URI
 
 export const app = express();
 
-const whitelist = ['https://*.admin.mailchimp.com'];
-const corsOptions = {
-    origin: function (origin: any, callback: any) {
-        if (whitelist.indexOf(origin) !== -1 || !origin) {
-            callback(null, true);
-        } else {
-            callback(new Error('No permitido por CORS'));
-        }
-    }
-};
-
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: ['https://*.admin.mailchimp.com'],
+    methods: ['POST']
+}));
 app.use(express.json());
 
 mongoose.connect(MONGODB_URI!)
