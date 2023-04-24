@@ -11,12 +11,10 @@ const router = express.Router()
 const upload = multer({ dest: 'uploads/' });
 const LIMIT = 10;
 
-router.post('/new-contacts-notification', (req: Request, res: Response) => {
+router.post('/newcontactsnotification', (req: Request, res: Response) => {
     const contacts = req.body
     console.log(contacts)
-    res.status(200).send({
-        ok: 'Contact added'
-    })
+    res.sendStatus(200)
 })
 
 router.post("/upload", upload.single('csvFile'), async (req: Request, res: Response) => {
