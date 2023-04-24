@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "start": "node dist/server.js",
+    "start-all": "npm run build && npm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Washington Trucido",
