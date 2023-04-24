@@ -1,0 +1,14 @@
+#dependencies
+node_modules/
+uploads/
+
+#environment
+.env
+
+#js
+dist/
+
+fecha.txt
+indexTest.js
+TestData.csv
+TestData2.csv
