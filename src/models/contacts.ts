@@ -4,11 +4,11 @@ export interface Contact extends Document {
     firstName: string
     lastName: string
     systemRecordId: string
-    dateChanged: Date
+    dateChanged: string
     emailAddresses_EmailAddress: string
-    emailAddresses_DateChanged: Date
+    emailAddresses_DateChanged: string
     todaysVisitors: string
-    todaysVisitors_DateChanged: Date
+    todaysVisitors_DateChanged: string
     addresses_AddressLine_1: string
     addresses_AddressLine_2: string
     addressesCity: string
@@ -16,36 +16,36 @@ export interface Contact extends Document {
     addresses_StateAbbreviation: string
     addresses_CountryAbbreviation: string
     phonesNumber: string
-    phones_DateChanged: Date
+    phones_DateChanged: string
 }
 
 const contactSchema = new Schema<Contact>({
     firstName: {
-        type: String,
-        required: true
+        type: String
+
     },
     lastName: {
-        type: String,
-        required: true
+        type: String
+
     },
     systemRecordId: {
         type: String
     },
     dateChanged: {
-        type: Date
+        type: String
     },
     emailAddresses_EmailAddress: {
         type: String,
         required: true
     },
     emailAddresses_DateChanged: {
-        type: Date
+        type: String
     },
     todaysVisitors: {
         type: String
     },
     todaysVisitors_DateChanged: {
-        type: Date
+        type: String
     },
     addresses_AddressLine_1: {
         type: String
@@ -69,7 +69,7 @@ const contactSchema = new Schema<Contact>({
         type: String
     },
     phones_DateChanged: {
-        type: Date
+        type: String
     }
 })
 

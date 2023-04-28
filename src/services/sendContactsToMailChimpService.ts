@@ -1,27 +1,24 @@
 import Mailchimp from "mailchimp-api-v3";
-import Contact from "../models/contacts"
+import Contact from "../models/contacts";
+import { createFieldsService } from '../services/createFieldsService';
 
-export const sendContactsToMailChimp = async () => {
-    const apiKey = process.env.apiKey
-    const listId = process.env.listId
-    const batchSize = 10;
+export const sendContactsToMailChimpService = async () => {
+    const apiKey = process.env.apiKey;
+    const listId = process.env.listId;
+    const batchSize = 30;
     let offset = 0;
 
     const mailchimp = new Mailchimp(apiKey!);
 
     async function sendContactsInBatches() {
-        let areAvailableContacts = true
+        await createFieldsService(listId!);
+        let areAvailableContacts = true;
         do {
-            // Obtener los siguientes registros de la base de datos
             const contactsFromDatabase = await Contact.find().skip(offset).limit(batchSize);
-
-            // Si no hay más registros, salir del ciclo while
             if (contactsFromDatabase.length === 0) {
-                areAvailableContacts = false
-                continue
+                areAvailableContacts = false;
+                continue;
             }
-
-            // Agregar los registros a la lista de contactos
             const contactsToSend = contactsFromDatabase.map((contact) => ({
                 email_address: contact.emailAddresses_EmailAddress,
                 status: 'subscribed',
@@ -30,11 +27,11 @@ export const sendContactsToMailChimp = async () => {
                     LNAME: contact.lastName,
                     ADDRESS: {
                         addr1: contact.addresses_AddressLine_1.length > 0 ? contact.addresses_AddressLine_1 : 'without addr.',
-                        addr2: contact.addresses_AddressLine_2,
+                        addr2: contact.addresses_AddressLine_2.length > 0 ? contact.addresses_AddressLine_2 : 'without addr2.',
                         city: contact.addressesCity.length > 0 ? contact.addressesCity : 'without city',
                         state: contact.addresses_StateAbbreviation.length > 0 ? contact.addresses_StateAbbreviation : 'without state',
                         zip: contact.addressesZip.length > 0 ? contact.addressesZip : "00000",
-                        country: contact.addresses_CountryAbbreviation
+                        country: contact.addresses_CountryAbbreviation.length > 0 ? contact.addresses_CountryAbbreviation : 'without country'
                     },
                     PHONE: contact.phonesNumber,
                     IDRECORD: contact.systemRecordId,
@@ -48,26 +45,21 @@ export const sendContactsToMailChimp = async () => {
             try {
                 await sendContactsBatch(contactsToSend);
             } catch (error) {
-                console.error(error)
-                throw error
+                throw new Error('Error sending contacts.');
             }
-            // Incrementar el offset para la próxima iteración
             offset += batchSize;
-        } while (areAvailableContacts)
+        } while (areAvailableContacts);
     }
-
     async function sendContactsBatch(contacts: any) {
-        const batch =
-            contacts.map((contact: any) => ({
-                method: 'POST',
-                path: `/lists/${listId}/members`,
-                body: contact
-            }))
+        const batch = contacts.map((contact: any) => ({
+            method: 'POST',
+            path: `/lists/${listId}/members`,
+            body: contact
+        }))
         try {
-            const response = await mailchimp.batch(batch);
-            console.log('batches sent to mailChimp');
+            await mailchimp.batch(batch);
         } catch (error) {
-            console.error('Error sending batch', error);
+            throw new Error('Error sending batch');
         }
     }
     sendContactsInBatches();
