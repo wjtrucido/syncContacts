@@ -9,8 +9,11 @@ https://nodejs.org/en
 
 1- In your operating system create a working directory and open a new terminal in this directory.
 2- Git clone: https://github.com/wjtrucido/syncContacts.git
+
 3- cd syncMailchimp
+
 4- npm install
+
 5- In the project there is an example .env file called .env-example.
    Rename ".env-example" to ".env".
    This file contains the following variables, which we must fill in.
