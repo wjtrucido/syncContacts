@@ -9,7 +9,7 @@ https://nodejs.org/en
 
 1- In your operating system create a working directory and open a new terminal in this directory.
 
-2- Git clone: https://github.com/wjtrucido/syncContacts.git
+2- Git clone https://github.com/wjtrucido/syncContacts.git
 
 3- cd syncMailchimp
 
